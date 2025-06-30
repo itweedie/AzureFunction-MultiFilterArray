@@ -1,0 +1,395 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Azure Function Multi Filter Array API",
+    "description": "Compare multiple sets of arrays, identifying unique string values in each set relative to a base set. Perfect for data synchronization, email list management, and data validation workflows.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "url": "https://github.com/itweedie/AzureFunction-MultiFilterArray"
+    }
+  },
+  "host": "yourapp.azurewebsites.net",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "function_key": {
+      "type": "apiKey",
+      "name": "code",
+      "in": "query",
+      "description": "Azure Function key for authentication"
+    }
+  },
+  "security": [
+    {
+      "function_key": []
+    }
+  ],
+  "paths": {
+    "/filterArray": {
+      "post": {
+        "summary": "Compare Arrays - General Purpose",
+        "description": "Compare multiple arrays against a base array to identify unique values in each set. Returns values present in check arrays but not in base, and values present in base but not in check arrays.",
+        "operationId": "FilterArray",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayComparisonRequest"
+            },
+            "description": "Request payload containing base array and arrays to compare"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful comparison results",
+            "schema": {
+              "$ref": "#/definitions/ArrayComparisonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid input format",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Array Comparison"
+        ]
+      },
+      "get": {
+        "summary": "Test Filter Array Endpoint",
+        "description": "Test endpoint that returns sample data for the filterArray function",
+        "operationId": "TestFilterArray",
+        "responses": {
+          "200": {
+            "description": "Sample response data",
+            "schema": {
+              "$ref": "#/definitions/ArrayComparisonResponse"
+            }
+          }
+        },
+        "tags": [
+          "Testing"
+        ]
+      }
+    },
+    "/emailArray": {
+      "post": {
+        "summary": "Compare Email Arrays",
+        "description": "Specialized endpoint for comparing email address arrays. Same functionality as filterArray but optimized for email use cases.",
+        "operationId": "EmailArray",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailComparisonRequest"
+            },
+            "description": "Request payload containing base email array and email arrays to compare"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful email comparison results",
+            "schema": {
+              "$ref": "#/definitions/ArrayComparisonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid email format or structure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Email Comparison"
+        ]
+      },
+      "get": {
+        "summary": "Test Email Array Endpoint",
+        "description": "Test endpoint that returns sample data for the emailArray function",
+        "operationId": "TestEmailArray",
+        "responses": {
+          "200": {
+            "description": "Sample email response data",
+            "schema": {
+              "$ref": "#/definitions/ArrayComparisonResponse"
+            }
+          }
+        },
+        "tags": [
+          "Testing"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ValueObject": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "The string value to compare",
+          "example": "example_value"
+        }
+      },
+      "description": "Object containing a string value for comparison"
+    },
+    "EmailObject": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address to compare",
+          "example": "user@example.com"
+        }
+      },
+      "description": "Object containing an email address for comparison"
+    },
+    "CheckArray": {
+      "type": "object",
+      "required": [
+        "checkName",
+        "checkValues"
+      ],
+      "properties": {
+        "checkName": {
+          "type": "string",
+          "description": "Name identifier for this check array",
+          "example": "ArrayA"
+        },
+        "checkValues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueObject"
+          },
+          "description": "Array of value objects to compare against the base"
+        }
+      },
+      "description": "A named array to compare against the base array"
+    },
+    "EmailCheckArray": {
+      "type": "object",
+      "required": [
+        "checkName",
+        "checkValues"
+      ],
+      "properties": {
+        "checkName": {
+          "type": "string",
+          "description": "Name identifier for this email check array",
+          "example": "EmailListA"
+        },
+        "checkValues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailObject"
+          },
+          "description": "Array of email objects to compare against the base"
+        }
+      },
+      "description": "A named email array to compare against the base array"
+    },
+    "ArrayComparisonRequest": {
+      "type": "object",
+      "required": [
+        "base",
+        "check"
+      ],
+      "properties": {
+        "base": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueObject"
+          },
+          "description": "Base array containing reference values for comparison"
+        },
+        "check": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CheckArray"
+          },
+          "description": "Array of named arrays to compare against the base"
+        }
+      },
+      "example": {
+        "base": [
+          {
+            "value": "value1"
+          },
+          {
+            "value": "value2"
+          }
+        ],
+        "check": [
+          {
+            "checkName": "ArrayA",
+            "checkValues": [
+              {
+                "value": "value2"
+              },
+              {
+                "value": "value3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "EmailComparisonRequest": {
+      "type": "object",
+      "required": [
+        "base",
+        "check"
+      ],
+      "properties": {
+        "base": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailObject"
+          },
+          "description": "Base array containing reference email addresses for comparison"
+        },
+        "check": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailCheckArray"
+          },
+          "description": "Array of named email arrays to compare against the base"
+        }
+      },
+      "example": {
+        "base": [
+          {
+            "value": "admin@company.com"
+          },
+          {
+            "value": "user@company.com"
+          }
+        ],
+        "check": [
+          {
+            "checkName": "MailingListA",
+            "checkValues": [
+              {
+                "value": "user@company.com"
+              },
+              {
+                "value": "newuser@company.com"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "ComparisonResult": {
+      "type": "object",
+      "properties": {
+        "inCheckNotInBase": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueObject"
+          },
+          "description": "Values present in the check array but not in the base array"
+        },
+        "inBaseNotInCheck": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueObject"
+          },
+          "description": "Values present in the base array but not in the check array"
+        }
+      },
+      "description": "Results of comparing a single check array against the base array"
+    },
+    "ArrayComparisonResponse": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ComparisonResult"
+      },
+      "description": "Response containing comparison results for each named check array",
+      "example": {
+        "ArrayA": {
+          "inCheckNotInBase": [
+            {
+              "value": "value3"
+            }
+          ],
+          "inBaseNotInCheck": [
+            {
+              "value": "value1"
+            }
+          ]
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message describing what went wrong"
+        },
+        "details": {
+          "type": "string",
+          "description": "Additional details about the error"
+        }
+      },
+      "example": {
+        "error": "Invalid request format",
+        "details": "The 'base' array is required and must contain objects with 'value' properties"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Array Comparison",
+      "description": "General purpose array comparison operations"
+    },
+    {
+      "name": "Email Comparison",
+      "description": "Email-specific array comparison operations"
+    },
+    {
+      "name": "Testing",
+      "description": "Test endpoints for verification"
+    }
+  ],
+  "externalDocs": {
+    "description": "Find more info about this API",
+    "url": "https://github.com/itweedie/AzureFunction-MultiFilterArray"
+  }
+}
