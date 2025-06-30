@@ -64,6 +64,10 @@
             {
               "name": "WEBSITE_RUN_FROM_PACKAGE",
               "value": "[parameters('packageUri')]"
+            },
+            {
+              "name": "AzureWebJobsFeatureFlags",
+              "value": "EnableWorkerIndexing"
             }
           ]
         }

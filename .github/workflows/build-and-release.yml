@@ -45,6 +45,11 @@ jobs:
         cp package-lock.json deployment-package/
         cp host.json deployment-package/
         
+        # Install production dependencies in the deployment package
+        cd deployment-package
+        npm ci --production
+        cd ..
+        
         # Create the zip file
         cd deployment-package
         zip -r ../azure-function-deployment.zip .
