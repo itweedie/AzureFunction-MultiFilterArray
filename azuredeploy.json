@@ -172,8 +172,9 @@
     },
     "packageUri": {
       "type": "string",
+      "defaultValue": "https://github.com/itweedie/AzureFunction-MultiFilterArray/releases/latest/download/azure-function-deployment.zip",
       "metadata": {
-        "description": "URI to the deployment package zip file (e.g., GitHub release URL)."
+        "description": "URI to the deployment package zip file (GitHub release)."
       }
     }
   },
