@@ -178,7 +178,7 @@ Both endpoints support GET requests for testing purposes, returning sample data.
 
 **Example Function URL**:
 ```
-https://250630test9.azurewebsites.net/api/filterArray?code=FXsI-oHhZE_d3IUQuKXScF8EaCN1DWDEZQEUkPgB5R5nAzFuyzWJSw==
+https://250630test9.azurewebsites.net/api/filterArray?code=YOUR_FUNCTION_KEY_HERE
 ```
 
 #### Step 5: Test Your Function
