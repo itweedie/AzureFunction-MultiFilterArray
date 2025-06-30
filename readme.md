@@ -1,5 +1,7 @@
 # AzureFunction-MultiFilterArray
 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYOUR_USERNAME%2FAzureFunction-MultiFilterArray%2Fmain%2Fazuredeploy.json)
+
 ## Overview
 
 The AzureFunction-MultiFilterArray is an Azure Function designed to compare multiple sets of arrays, identifying unique string values in each set relative to a base set. This function is highly adaptable and can be applied in various contexts where array comparisons are needed, such as data synchronization or filtering distinct values across datasets.
@@ -28,6 +30,17 @@ graph LR
 ```
 
 ## Deployment from GitHub to Azure Functions
+
+### Quick Deploy (Recommended)
+
+Click the "Deploy to Azure" button above for one-click deployment. This will:
+- Create all necessary Azure resources (Function App, Storage Account, Hosting Plan)
+- Deploy the function code automatically
+- Configure the runtime environment
+
+**Note**: You'll need to replace `YOUR_USERNAME` in the Deploy to Azure button URL with your actual GitHub username.
+
+### Manual Deployment Steps
 
 ### Prerequisites
 
