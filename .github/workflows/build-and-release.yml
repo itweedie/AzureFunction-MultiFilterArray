@@ -37,10 +37,13 @@ jobs:
         # Create a temporary directory for the deployment package
         mkdir -p deployment-package
         
-        # Copy function files to root level for Azure Functions
-        cp -r src/functions/* deployment-package/
+        # Copy the entire src directory structure (preserving folder structure)
+        cp -r src/ deployment-package/
         
-        # Copy necessary files for Azure Functions deployment
+        # Copy the index.js to root level for Azure Functions entry point
+        cp src/index.js deployment-package/index.js
+        
+        # Copy necessary files for Azure Functions deployment to root
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp host.json deployment-package/
@@ -55,8 +58,8 @@ jobs:
         zip -r ../azure-function-deployment.zip .
         cd ..
         
-        # Verify the zip contents
-        echo "Zip file contents:"
+        # Verify the zip contents and structure
+        echo "Zip file contents and structure:"
         unzip -l azure-function-deployment.zip
 
     - name: Upload build artifacts
