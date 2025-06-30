@@ -2,7 +2,7 @@ const { app } = require('@azure/functions');
 const axios = require('axios');
 
 // Define the HTTP trigger for the Azure Function with configuration.
-app.http('filterArray', {
+app.http('emailArray', {
     methods: ['GET', 'POST'],  // Allow both GET and POST requests (POST is used here).
     authLevel: 'anonymous',    // No authentication required, accessible publicly.
     handler: async (req, context) => {
@@ -35,8 +35,8 @@ app.http('filterArray', {
         // Extract the array of checks from the request data.
         const checks = data.check || [];
 
-        // Function to extract values from an array of objects.
-        // Each object in the array has a structure of { "value": "some_value" }.
+        // Function to extract email values from an array of objects.
+        // Each object in the array has a structure of { "value": "email" }.
         const extractValues = (checkValues) => {
             return checkValues.map(item => item.value);
         };
@@ -44,10 +44,10 @@ app.http('filterArray', {
         // Function to calculate differences between the base array and check arrays.
         // Returns the results in an array of objects, preserving the structure.
         const calculateDifferences = (checkValues, base) => {
-            const checkValuesArray = extractValues(checkValues);
+            const checkEmails = extractValues(checkValues);
             return {
-                inCheckNotInBase: checkValuesArray.filter(value => !base.includes(value)).map(value => ({ value: value })),
-                inBaseNotInCheck: base.filter(value => !checkValuesArray.includes(value)).map(value => ({ value: value }))
+                inCheckNotInBase: checkEmails.filter(email => !base.includes(email)).map(email => ({ value: email })),
+                inBaseNotInCheck: base.filter(email => !checkEmails.includes(email)).map(email => ({ value: email }))
             };
         };
 
