@@ -1,4 +1,5 @@
 const { app } = require('@azure/functions');
+const axios = require('axios');
 
 // Define the HTTP trigger for the Azure Function with configuration.
 app.http('filterArray', {
@@ -7,6 +8,15 @@ app.http('filterArray', {
     handler: async (request, context) => {
         // Log the URL of the request to the Azure Function's context for debugging.
         context.log(`Http function processed request for url "${request.url}"`);
+
+        // Get developer message
+        try {
+            const devMessageResponse = await axios.get('https://mightora-developer-messaging.azurewebsites.net/api/HttpTrigger?appname=flowproxy');
+            const devMessage = devMessageResponse.data.message;
+            context.log('Developer Message:', devMessage);
+        } catch (error) {
+            // Ignore errors from this call
+        }
 
         // Read and parse the JSON body from the HTTP request.
         const data = await request.json();
