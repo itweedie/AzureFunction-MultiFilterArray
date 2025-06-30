@@ -4,7 +4,7 @@ const axios = require('axios');
 // Define the HTTP trigger for the Azure Function with configuration.
 app.http('filterArray', {
     methods: ['GET', 'POST'],  // Allow both GET and POST requests (POST is used here).
-    authLevel: 'anonymous',    // No authentication required, accessible publicly.
+    authLevel: 'function',    // No authentication required, accessible publicly.
     handler: async (req, context) => {
         // Log the URL of the request to the Azure Function's context for debugging.
         context.log(`Http function processed request for url "${req.url}"`);

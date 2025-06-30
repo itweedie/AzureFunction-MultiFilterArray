@@ -2,7 +2,7 @@ const { app } = require('@azure/functions');
 
 app.http('helloWorld', {
     methods: ['GET'],
-    authLevel: 'anonymous',
+    authLevel: 'function',
     handler: async (req, context) => {
         context.log(`Http function processed request for url "${req.url}"`);
 
