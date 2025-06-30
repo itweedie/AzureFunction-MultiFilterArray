@@ -57,7 +57,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout repository
@@ -71,10 +71,13 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: latest
+        name: Latest Build
         files: azure-function-deployment.zip
-        generate_release_notes: true
+        generate_release_notes: false
         draft: false
         prerelease: false
+        make_latest: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
