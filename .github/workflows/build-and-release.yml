@@ -41,7 +41,7 @@ jobs:
         cp -r src/ deployment-package/
         
         # Copy the index.js to root level for Azure Functions entry point
-        cp src/index.js deployment-package/index.js
+        #cp src/index.js deployment-package/index.js
         
         # Copy necessary files for Azure Functions deployment to root
         cp package.json deployment-package/

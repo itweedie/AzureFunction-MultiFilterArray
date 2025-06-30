@@ -5,9 +5,16 @@ const axios = require('axios');
 app.http('filterArray', {
     methods: ['GET', 'POST'],  // Allow both GET and POST requests (POST is used here).
     authLevel: 'anonymous',    // No authentication required, accessible publicly.
-    handler: async (request, context) => {
+    handler: async (req, context) => {
         // Log the URL of the request to the Azure Function's context for debugging.
-        context.log(`Http function processed request for url "${request.url}"`);
+        context.log(`Http function processed request for url "${req.url}"`);
+
+        // Extract and log all headers
+        let headersOutput = '';
+        for (const [key, value] of Object.entries(req.headers)) {
+            context.log(`Header: ${key} = ${value}`);
+            headersOutput += `${key}: ${value}\n`;
+        }
 
         // Get developer message
         try {
@@ -19,7 +26,7 @@ app.http('filterArray', {
         }
 
         // Read and parse the JSON body from the HTTP request.
-        const data = await request.json();
+        const data = await req.json();
 
         // Extract and convert the base array from JSON objects to an array of strings.
         // Map each object in the base array to its value property.
