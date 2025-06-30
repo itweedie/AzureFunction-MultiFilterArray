@@ -68,6 +68,13 @@ jobs:
       with:
         name: azure-function-deployment
 
+    - name: Create and push tag
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag build-${{ github.run_number }}
+        git push origin build-${{ github.run_number }}
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
