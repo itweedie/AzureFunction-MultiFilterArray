@@ -37,8 +37,10 @@ jobs:
         # Create a temporary directory for the deployment package
         mkdir -p deployment-package
         
+        # Copy function files to root level for Azure Functions
+        cp -r src/functions/* deployment-package/
+        
         # Copy necessary files for Azure Functions deployment
-        cp -r src/ deployment-package/
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp host.json deployment-package/
