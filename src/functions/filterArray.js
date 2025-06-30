@@ -11,7 +11,7 @@ app.http('filterArray', {
 
         // Get developer message
         try {
-            const devMessageResponse = await axios.get('https://mightora-developer-messaging.azurewebsites.net/api/HttpTrigger?appname=flowproxy');
+            const devMessageResponse = await axios.get('https://developer-message.mightora.io/api/HttpTrigger?appname=AzureFunction-MultiFilterArray');
             const devMessage = devMessageResponse.data.message;
             context.log('Developer Message:', devMessage);
         } catch (error) {

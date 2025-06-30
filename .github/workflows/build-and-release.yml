@@ -71,13 +71,12 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: latest
-        name: Latest Build
+        tag_name: build-${{ github.run_number }}
+        name: Build #${{ github.run_number }}
         files: azure-function-deployment.zip
         generate_release_notes: false
         draft: false
         prerelease: false
-        make_latest: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
