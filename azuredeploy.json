@@ -1,0 +1,194 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('hostingPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('hostingPlanType')]",
+        "tier": "[if(equals(parameters('hostingPlanType'), 'Y1'), 'Dynamic', if(equals(parameters('hostingPlanType'), 'F1'), 'Free', if(equals(parameters('hostingPlanType'), 'D1'), 'Shared', if(or(equals(parameters('hostingPlanType'), 'B1'), equals(parameters('hostingPlanType'), 'B2'), equals(parameters('hostingPlanType'), 'B3')), 'Basic', if(or(equals(parameters('hostingPlanType'), 'S1'), equals(parameters('hostingPlanType'), 'S2'), equals(parameters('hostingPlanType'), 'S3')), 'Standard', if(or(equals(parameters('hostingPlanType'), 'P1'), equals(parameters('hostingPlanType'), 'P2'), equals(parameters('hostingPlanType'), 'P3')), 'Premium', 'ElasticPremium'))))))]",
+        "size": "[parameters('hostingPlanType')]",
+        "family": "[if(equals(parameters('hostingPlanType'), 'Y1'), 'Y', if(or(equals(parameters('hostingPlanType'), 'F1'), equals(parameters('hostingPlanType'), 'D1')), 'F', if(or(equals(parameters('hostingPlanType'), 'B1'), equals(parameters('hostingPlanType'), 'B2'), equals(parameters('hostingPlanType'), 'B3')), 'B', if(or(equals(parameters('hostingPlanType'), 'S1'), equals(parameters('hostingPlanType'), 'S2'), equals(parameters('hostingPlanType'), 'S3')), 'S', if(or(equals(parameters('hostingPlanType'), 'P1'), equals(parameters('hostingPlanType'), 'P2'), equals(parameters('hostingPlanType'), 'P3')), 'P', 'EP')))))]",
+        "capacity": 1
+      },
+      "kind": "functionapp"
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-05-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS" 
+      },
+      "kind": "StorageV2",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('functionAppName')]",
+      "location": "[parameters('location')]",
+      "kind": "functionapp",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-05-01').keys[0].value, ';EndpointSuffix=core.windows.net')]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~4"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "node"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "~20"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/extensions",
+      "apiVersion": "2022-03-01",
+      "name": "[concat(parameters('functionAppName'), '/MSDeploy')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "packageUri": "[parameters('packageUri')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+      ]
+    }
+  ],
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "UK South",
+      "allowedValues": [
+        "East US",
+        "East US 2",
+        "West US",
+        "West US 2",
+        "Central US",
+        "North Central US",
+        "South Central US",
+        "West Europe",
+        "North Europe",
+        "Southeast Asia",
+        "East Asia",
+        "Japan East",
+        "Japan West",
+        "Australia East",
+        "Australia Southeast",
+        "Central India",
+        "South India",
+        "West India",
+        "Canada Central",
+        "Canada East",
+        "UK South",
+        "UK West",
+        "West Central US",
+        "Korea Central",
+        "Korea South",
+        "France Central",
+        "France South",
+        "Australia Central",
+        "Australia Central 2",
+        "UAE North",
+        "UAE Central",
+        "South Africa North",
+        "South Africa West",
+        "Switzerland North",
+        "Switzerland West",
+        "Germany North",
+        "Germany West Central",
+        "Norway East",
+        "Norway West",
+        "Brazil South",
+        "Brazil Southeast"
+      ],
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "hostingPlanName": {
+      "type": "string",
+      "defaultValue": "multifilterarray-consumption-plan",
+      "metadata": {
+        "description": "Name of the hosting plan."
+      }
+    },
+    "hostingPlanType": {
+      "type": "string",
+      "allowedValues": [
+        "Y1",
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "EP1",
+        "EP2",
+        "EP3"
+      ],
+      "defaultValue": "Y1",
+      "metadata": {
+        "description": "Hosting plan type: Y1=Consumption (pay-per-use, cheapest for low usage), F1=Free tier, D1=Shared, B1-B3=Basic (cheapest dedicated), S1-S3=Standard, P1-P3=Premium, EP1-EP3=Elastic Premium"
+      }
+    },
+    "functionAppName": {
+      "type": "string",
+      "defaultValue": "multifilterarray-function-app",
+      "metadata": {
+        "description": "Name of the Azure Function App."
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[concat('storage', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Name of the storage account. Must be globally unique."
+      }
+    },
+    "packageUri": {
+      "type": "string",
+      "metadata": {
+        "description": "URI to the deployment package zip file (e.g., GitHub release URL)."
+      }
+    }
+  },
+  "outputs": {
+    "functionAppName": {
+      "type": "string",
+      "value": "[parameters('functionAppName')]"
+    },
+    "functionAppUrl": {
+      "type": "string",
+      "value": "[concat('https://', parameters('functionAppName'), '.azurewebsites.net')]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    }
+  }
+}
