@@ -115,9 +115,10 @@ Both endpoints support GET requests for testing purposes, returning sample data.
 3. Use the same URL format with the host key
 
 ### Authentication Levels
-- **Function Level**: Requires function-specific key (default)
 - **Anonymous**: No authentication required (not recommended for production)
 - **Admin**: Requires master key access
+- **Function Level**: Requires function-specific key (default)
+      > Note: Used in this code, used in this code. If you don't wish to use this method then fork, and edit the code and then deploy via method 2. 
 
 ## Known Issues and Limitations
 
