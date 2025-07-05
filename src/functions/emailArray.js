@@ -10,7 +10,7 @@ app.http('emailArray', {
         context.log(`Http function processed request for url "${req.url}"`);
 
         // Extract and log all headers
-        let headersOutput = '';
+        let headersOutput = ''; 
         for (const [key, value] of Object.entries(req.headers)) {
             context.log(`Header: ${key} = ${value}`);
             headersOutput += `${key}: ${value}\n`;
@@ -59,9 +59,15 @@ app.http('emailArray', {
             results[check.checkName] = calculateDifferences(check.checkValues, base);
         });
 
+        // Convert the results object into an array format.
+        const resultsArray = Object.entries(results).map(([checkName, values]) => ({
+            checkName,
+            ...values
+        }));
+
         // Return the results as a JSON response with appropriate headers.
         return {
-            body: JSON.stringify(results), // Convert the results object to a JSON string.
+            body: JSON.stringify(resultsArray), // Convert the results array to a JSON string.
             headers: {
                 'Content-Type': 'application/json' // Set content type to application/json to inform the client.
             }
