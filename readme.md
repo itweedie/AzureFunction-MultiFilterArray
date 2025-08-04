@@ -4,6 +4,11 @@
 
 The AzureFunction-MultiFilterArray is an Azure Function designed to compare multiple sets of arrays, identifying unique string values in each set relative to a base set. This function is highly adaptable and can be applied in various contexts where array comparisons are needed, such as data synchronization, filtering distinct values across datasets, email list comparisons, and data validation workflows.
 
+[![DeepScan grade](https://deepscan.io/api/teams/25106/projects/30099/branches/964503/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=25106&pid=30099&bid=964503) 
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/itweedie/AzureFunction-MultiFilterArray.svg)](http://isitmaintained.com/project/itweedie/AzureFunction-MultiFilterArray)  
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/itweedie/AzureFunction-MultiFilterArray.svg)](http://isitmaintained.com/project/itweedie/AzureFunction-MultiFilterArray) 
+![Mightora.io](https://img.shields.io/badge/Mightora-Visit-blue?logo=https://raw.githubusercontent.com/mightora/mightora.io/main/static/favicon-32x32.png&link=https://mightora.io)
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fitweedie%2FAzureFunction-MultiFilterArray%2Fmain%2Fazuredeploy.json)
 
 ## How This Function Works
