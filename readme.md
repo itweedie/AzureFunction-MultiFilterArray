@@ -8,6 +8,7 @@ The AzureFunction-MultiFilterArray is an Azure Function designed to compare mult
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/itweedie/AzureFunction-MultiFilterArray.svg)](http://isitmaintained.com/project/itweedie/AzureFunction-MultiFilterArray)  
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/itweedie/AzureFunction-MultiFilterArray.svg)](http://isitmaintained.com/project/itweedie/AzureFunction-MultiFilterArray) 
 ![Mightora.io](https://img.shields.io/badge/Mightora-Visit-blue?logo=https://raw.githubusercontent.com/mightora/mightora.io/main/static/favicon-32x32.png&link=https://mightora.io)
+![Mightora.io](https://badgen.net/github/license/itweedie/AzureFunction-MultiFilterArray)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fitweedie%2FAzureFunction-MultiFilterArray%2Fmain%2Fazuredeploy.json)
 
